@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import ndarray
-from typing import Tuple
+from typing import Tuple, Callable
 
 def maze_generator() -> ndarray:
     matrix: ndarray = np.array([
@@ -18,7 +18,21 @@ def maze_generator() -> ndarray:
     
     return matrix
 
+def reward_function(agent_position: Tuple[int, int], 
+                    passed_checkpoint: bool, 
+                    checkpoint_position: Tuple[int, int], 
+                    end_position: Tuple[int, int]
+                    ) -> int:
+    
+    if agent_position == end_position and passed_checkpoint:
+        return 100
+    elif agent_position == checkpoint_position and not passed_checkpoint:
+        return 10
+    return -1
 
+
+    
+"""
 class State:
     def __init__(self, pos_x: int = 1, pos_y: int = 1, passed_sub_goal: bool = False):
         self.pos_x: int = pos_x
@@ -28,14 +42,24 @@ class State:
         
     def update_pos(self, position: Tuple[int, int]):
         self.pos_x, self.pos_y = position
+"""    
         
 
-def reward_function(state: State, checkpoint_position: Tuple[int, int], end_position: Tuple[int, int]):
-    if state.passed_sub_goal and (state.pos_x, state.pos_y) == end_position:
-        state.done = True
-        return 100
-    elif not state.passed_sub_goal and (state.pos_x, state.pos_y) == checkpoint_position:
-        state.passed_sub_goal = True
-        return 10
-    return -1
     
+
+"""
+class Environment:
+    def __init__(self, maze: ndarray = maze_generator(), reward_function = reward_function()):
+        self.maze               : ndarray                   = maze
+        self.reward_function    : Callable                  =  reward_function
+        self.start_position     : Tuple[int, int]           = (1,1)
+        self.checkpoint_position: Tuple[int, int]           = (3,5)
+        self.end_position       : Tuple[int,int]            = (7,8)
+        
+        
+class Agent:
+    def __init__(self):
+        self.state      : State             = State()
+        self.position   : Tuple[int, int]   = (self.state.pos_x, self.state.pos_y)
+        self.points     : int               = 0
+"""
