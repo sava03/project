@@ -70,9 +70,11 @@ def value_iteration(maze                : ndarray           = maze_generator(),
                         
     
     plt.matshow(value_func[True])
+    plt.colorbar()
     plt.show()
     
     plt.matshow(value_func[False])
+    plt.colorbar()
     plt.show()
                         
     # once we are done with iterating over the values:
@@ -84,6 +86,11 @@ def value_iteration(maze                : ndarray           = maze_generator(),
                     
                     if maze[current_pos] == '1':
                         continue
+                    
+                    elif maze[current_pos] == "E" and checkpoint_value:
+                        policy[checkpoint_value][current_pos] = 5
+                        continue
+                        
                     
                     best_move   : str = ""
                     best_value  : int = -float("inf")
@@ -110,7 +117,13 @@ def value_iteration(maze                : ndarray           = maze_generator(),
                         policy[checkpoint_value][current_pos] = 3
                     elif best_move == "right":
                         policy[checkpoint_value][current_pos] = 4
+    plt.matshow(policy[True])
+    plt.colorbar()
+    plt.show()
     
+    plt.matshow(policy[False])
+    plt.colorbar()
+    plt.show()
     return policy
 
 print(value_iteration())
